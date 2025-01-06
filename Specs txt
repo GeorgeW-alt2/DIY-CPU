@@ -1,7 +1,7 @@
 New DIY CPU:
-Simple prefix based(show work) arithmetic using strings and string addresses rather than binary. Programmable counter, and micro and macro string address translation...
+Simple prefix based(show work) arithmetic using strings and string addresses rather than binary. Programmable counter, and vertical and horizontal memory with variable translation...
 
 
 Requires a flash chip and memory interface and prefix table.
 
-Read only Kernel memory, then hash it and check hash at boot. An OS consisting of a compiler using micro memory and macro memory strings with kernel integration. A cryptographic function to secure programs from modification once compiled.
+Read only Kernel memory, then hash it and check hash at boot. An OS consisting of a compiler using vertical and horizontal memory strings with kernel integration. A cryptographic function to secure programs from modification once compiled.
