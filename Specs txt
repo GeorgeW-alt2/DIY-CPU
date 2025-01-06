@@ -1,2 +1,5 @@
 New DIY CPU:
 Simple prefix based(show work) arithmetic using strings and string addresses rather than binary. Programmable counter, and micro and macro string address translation...
+
+
+requires a flash chip and memory interface and prefix table.
