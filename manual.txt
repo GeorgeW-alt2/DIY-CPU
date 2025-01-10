@@ -1,0 +1,108 @@
+Creating a DIY CPU with a focus on simple prefix-based arithmetic using strings and string addresses rather than binary is an ambitious project. Below is a step-by-step breakdown on how you might approach this with an Atmel microcontroller (for example, the ATmega328P), starting with the fundamental components of memory, counters, and cryptographic security.
+
+### **1. Understanding Your System Components**
+Before proceeding with implementation, let’s define the major components of your system:
+
+- **Prefix-based arithmetic:** You will be using string manipulations (such as adding, subtracting, and comparing strings) to perform arithmetic rather than the typical binary arithmetic.
+- **Programmable counter:** A counter in your system to keep track of memory operations, program execution, or state changes.
+- **Vertical and Horizontal Memory:** These refer to different layouts for storing your memory data. Vertical memory could be implemented as memory registers, while horizontal memory could be an array or string-based structure.
+- **Flash Chip:** A flash chip to store your kernel, program code, and memory tables. You will likely use an external flash module (e.g., a SPI flash).
+- **Prefix Table:** A table used to map prefixes to functions (for arithmetic and memory operations).
+- **Read-only Kernel Memory:** A secured area in the system where the kernel resides. This section should be locked and protected from modification during runtime.
+- **Cryptographic Function:** Used for integrity checking to prevent unauthorized modifications to your compiled program.
+
+### **2. Microcontroller Setup**
+1. **Choose an Atmel chip** like the ATmega328P or another microcontroller with enough I/O pins, memory, and serial communication capabilities.
+2. **Install necessary development tools** such as the Arduino IDE or Atmel Studio to program your microcontroller.
+3. **Connect the flash chip** to your microcontroller using SPI or other communication protocols.
+
+### **3. Initialize the Memory and Addressing Scheme**
+Memory layout:
+- **Vertical Memory:** You can allocate a fixed memory space to store string-based data. This could be in SRAM or external memory.
+- **Horizontal Memory:** An array of memory locations that hold different pieces of data, like prefix information, program counters, or arithmetic results.
+
+**String-based Addressing:**
+- Instead of working with binary addresses, map each string (e.g., “ADD”, “SUB”, etc.) to a memory address. Use hash tables or dictionaries for efficient string address lookups.
+
+### **4. Implementing the Kernel**
+The kernel will be stored in read-only memory and should include critical functionality:
+- **Kernel Functions:** This could include the functions for string manipulation, handling arithmetic operations, memory access, etc.
+- **Flash Memory Security:** Ensure the flash memory where the kernel is stored is protected from modification. Use a cryptographic hash function to secure the kernel (e.g., SHA256).
+  
+Steps for Kernel Integration:
+1. **Store the kernel code** in flash memory (use a separate flash memory chip if necessary).
+2. **Generate a hash** (SHA256 or similar) of the kernel and store it in a secure location (non-volatile memory).
+3. **On boot-up**, hash the kernel again and compare it with the stored hash to ensure integrity.
+4. **Lock down kernel code** by disabling any writes to the read-only memory segment.
+
+### **5. Building the Compiler for String-based Operations**
+The system will require a custom compiler to translate prefix-based commands into machine actions (e.g., string manipulations, arithmetic).
+1. **Define the prefix table**: 
+   - Each command (e.g., “ADD”, “SUB”) is mapped to a function. 
+   - Example: "ADD" could trigger a string-based addition function.
+   
+2. **String-to-instruction Mapping:** When a program runs, it reads the string input (e.g., “ADD A B C”), looks up the prefix in the table, and executes the corresponding action (e.g., perform addition on strings A and B and store the result in C).
+
+3. **Translate the program**: Develop a simple parser to convert the string operations into machine-level instructions. The compiler would take string input and produce a sequence of instructions that correspond to the program’s intent.
+
+### **6. Implementing the Programmable Counter**
+The counter tracks the program’s execution or memory changes. This could be used to control:
+- The next memory location for data storage
+- Counting operations or loops in the program
+
+**Implementation:**
+- Create a counter variable.
+- Write functions to increment, reset, or modify the counter.
+- Use the counter to access specific memory locations or execute program steps.
+
+### **7. Memory Interface**
+Implementing both vertical and horizontal memory:
+1. **Vertical Memory:** This could be a series of registers or a reserved section in SRAM.
+   - Example: Registers store current string operations or partial results.
+2. **Horizontal Memory:** Use arrays of strings or a memory table to store the program code and variables.
+   - Example: Store the code as strings in flash memory and map it to different execution stages.
+
+### **8. Cryptographic Function for Security**
+To prevent modification of compiled programs, use a cryptographic function like SHA256 to secure programs:
+1. **Generate a hash of the program** when it is compiled.
+2. **On boot-up**, calculate the hash of the currently loaded program and compare it with the stored hash value.
+3. **Reject any modification** if the hashes do not match, ensuring the integrity of the program.
+
+### **9. Flash Chip and Memory Table Setup**
+The flash memory chip will hold both the kernel and the program code. Here’s how to organize it:
+1. **Flash Layout:**
+   - **Kernel:** Stored at a fixed address range in flash memory.
+   - **Program Code:** Stored in another section.
+   - **Prefix Table:** A lookup table to convert strings to memory addresses/functions.
+   - **Hash:** Store the hash of the compiled program for integrity checks.
+
+2. **Communication with Flash:** Use SPI or another communication protocol to read and write to the flash chip.
+
+### **10. Boot Process**
+1. **Initialize the System**: 
+   - Load the kernel from flash.
+   - Perform the cryptographic hash check.
+2. **Load Program**: 
+   - Load the program (as strings) from flash memory into the memory table.
+3. **Execute Program**: 
+   - Use the prefix table to parse and execute string-based instructions.
+   - Use the programmable counter to track execution.
+
+---
+
+### **Summary of Steps**
+
+1. **Set up development environment** (Arduino IDE/Atmel Studio).
+2. **Initialize microcontroller and connect flash chip** (use SPI).
+3. **Create and store the kernel** in read-only flash memory.
+4. **Generate a cryptographic hash** for program integrity verification.
+5. **Build the prefix table** to map string-based operations to machine instructions.
+6. **Implement the memory interface** (vertical and horizontal memory) with string-based addressing.
+7. **Develop the programmable counter** to track program execution.
+8. **Create a compiler** to convert string-based programs to machine-level code.
+9. **Flash memory layout**: Store kernel, program code, and hash in flash.
+10. **Boot-up**: Verify program integrity, load code, and execute with a string-based instruction set.
+
+---
+
+This approach gives you a high-level guide on how to set up your custom CPU using string-based arithmetic and secure your programs with cryptographic hash checking. For specific coding and hardware interfacing details, you'll need to dive into the specifics of the Atmel microcontroller’s registers, SPI communication, and other features.
